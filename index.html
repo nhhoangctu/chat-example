@@ -70,7 +70,6 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
   <script>
-      var tokens = response.data;
       var MAX_CLIENTS = 1000;
       var CLIENT_CREATION_INTERVAL = 10; // client / s
       var CLIENT_CREATION_INTERVAL_IN_MS = 1000; // s
@@ -89,10 +88,10 @@
         });
       }
 
-      const createClient = (token) => {
+      const createClient = () => {
         console.log("fffff")
         // for demonstration purposes, some clients stay sctuck in HTTP long-polling
-        const socket = io('ws://localhost:3333')
+        const socket = io('ws://localhost:3000')
 
         socket.on("connect", () => {
           count++
@@ -114,16 +113,10 @@
 
           await SleepJs(CLIENT_CREATION_INTERVAL_IN_MS);
 
-          if (tokens.length >= end) {
-            for (let index = start; index < end; index++) {
-              createClient(tokens[index].token)
+			for (let index = start; index < end; index++) {
+              createClient()
             }
-          } else {
-            for (let index = start; index < tokens.length; index++) {
-              createClient(tokens[index].token)
-            }
-            break;
-          }
+		
         }
       }
 
